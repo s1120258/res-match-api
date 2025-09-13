@@ -198,9 +198,9 @@ class SkillGapAnalysisTool(BaseTool):
             }}
             """
 
-            # Use existing LLM service for analysis
+            # Use LLM service with general feedback type for skill analysis
             analysis_result = llm_service.generate_feedback(
-                resume_text=skill_prompt, feedback_type="skills"
+                resume_text=skill_prompt, feedback_type="general"
             )
 
             if analysis_result and analysis_result[0]:
@@ -388,33 +388,22 @@ class CareerStrategyAgent:
             max_tokens=2000,
         )
 
-        # Agent system prompt
+        # Agent system prompt - simplified and fixed
         self.system_prompt = ChatPromptTemplate.from_messages(
             [
-                SystemMessage(
-                    content="""
-            You are a Career Strategy Agent, an expert career advisor with deep knowledge of job markets,
-            skill development, and career progression strategies. Your role is to provide comprehensive,
-            actionable career guidance through multi-step analysis.
+                (
+                    "system",
+                    """You are a Career Strategy Agent. When given career information, you MUST use your tools.
 
-            Your capabilities include:
-            1. Job market analysis and trend identification
-            2. Skill gap analysis and learning recommendations
-            3. Career path planning with structured timelines
-            4. Strategic advice for career transitions
+Available tools:
+- job_analysis_tool: Analyze job market for target roles
+- skill_gap_analysis_tool: Assess skill requirements and gaps
+- career_path_planner_tool: Create structured career plans
 
-            Always provide:
-            - Data-driven insights when possible
-            - Actionable recommendations with clear next steps
-            - Realistic timelines and expectations
-            - Multiple perspectives and options
-
-            Use the available tools to gather information and provide comprehensive analysis.
-            Structure your responses clearly and include specific recommendations.
-            """
+ALWAYS use these tools when career information is provided. Start with job_analysis_tool.""",
                 ),
                 MessagesPlaceholder(variable_name="chat_history"),
-                HumanMessage(content="{input}"),
+                ("human", "{input}"),
                 MessagesPlaceholder(variable_name="agent_scratchpad"),
             ]
         )
@@ -434,13 +423,15 @@ class CareerStrategyAgent:
             llm=self.llm, tools=tools, prompt=self.system_prompt
         )
 
-        # Create agent executor
+        # Create agent executor with explicit configuration
         agent_executor = AgentExecutor(
             agent=agent,
             tools=tools,
             verbose=True,
-            max_iterations=5,
-            early_stopping_method="generate",
+            max_iterations=10,
+            early_stopping_method="force",
+            handle_parsing_errors=True,
+            return_intermediate_steps=True,
         )
 
         return agent_executor
@@ -483,29 +474,39 @@ class CareerStrategyAgent:
             constraints = constraints or []
 
             analysis_input = f"""
-            Please provide a comprehensive career strategy analysis for the following profile:
+            CAREER STRATEGY ANALYSIS REQUEST
 
-            CAREER GOALS: {career_goals}
-            TARGET ROLES: {', '.join(target_roles) if target_roles else 'Not specified'}
-            CURRENT ROLE: {current_role or 'Not specified'}
-            TIMEFRAME: {timeframe}
-            LOCATION PREFERENCE: {location_preference or 'Not specified'}
-            CONSTRAINTS: {', '.join(constraints) if constraints else 'None'}
-            USER_ID: {str(user_id)}
+            User Profile:
+            - CAREER GOALS: {career_goals}
+            - TARGET ROLES: {', '.join(target_roles) if target_roles else 'Not specified'}
+            - CURRENT ROLE: {current_role or 'Not specified'}
+            - TIMEFRAME: {timeframe}
+            - LOCATION PREFERENCE: {location_preference or 'Not specified'}
+            - CONSTRAINTS: {', '.join(constraints) if constraints else 'None'}
+            - USER_ID: {str(user_id)}
 
-            Please use your tools to:
-            1. Analyze the job market for the target roles and location
-            2. Assess skill gaps based on the user's profile
-            3. Create a structured career progression plan
+            REQUIRED ACTIONS - You MUST use ALL three tools in this order:
 
-            Provide comprehensive analysis with actionable recommendations.
+            1. FIRST: Use job_analysis_tool with the target roles and location to analyze market conditions
+            2. SECOND: Use skill_gap_analysis_tool with the target roles and career goals to assess skill requirements
+            3. THIRD: Use career_path_planner_tool to create a structured career progression plan
+
+            After using all tools, provide a comprehensive synthesis of the results with actionable recommendations.
+
+            START BY USING THE FIRST TOOL NOW.
             """
+
+            # Debug: Log the input being sent to agent
+            logger.info(f"Agent input preview: {analysis_input[:200]}...")
 
             # Execute agent analysis with cost tracking
             with get_openai_callback() as cb:
                 result = agent_executor.invoke(
                     {"input": analysis_input, "chat_history": []}
                 )
+
+            # Debug: Log the raw result
+            logger.info(f"Agent raw result: {result}")
 
             # Log token usage
             logger.info(
@@ -549,20 +550,20 @@ class CareerStrategyAgent:
                 "market_analysis": "Analysis in progress - agent response parsing needed",
                 "demand_trends": ["Market analysis requires further data collection"],
                 "salary_insights": "Salary data collection in progress",
-                "skill_requirements": ["Skills analysis pending"]
+                "skill_requirements": ["Skills analysis pending"],
             },
             "skill_analysis": {
                 "current_skills": ["Skill assessment in progress"],
                 "skill_gaps": ["Gap analysis pending"],
                 "learning_recommendations": ["Learning path to be determined"],
-                "priority_skills": ["Priority assessment needed"]
+                "priority_skills": ["Priority assessment needed"],
             },
             "career_plan": {
                 "career_phases": [],
                 "key_milestones": ["Milestone planning in progress"],
                 "potential_challenges": ["Challenge identification needed"],
-                "success_strategies": ["Strategy development pending"]
-            }
+                "success_strategies": ["Strategy development pending"],
+            },
         }
 
         try:
