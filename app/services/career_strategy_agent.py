@@ -543,7 +543,27 @@ class CareerStrategyAgent:
 
     def _extract_analysis_data(self, agent_response: str) -> Dict[str, Any]:
         """Extract structured analysis data from agent response."""
-        analysis_data = {"market_analysis": {}, "skill_analysis": {}, "career_plan": {}}
+        # Initialize with proper fallback structure matching Pydantic schema
+        analysis_data = {
+            "market_analysis": {
+                "market_analysis": "Analysis in progress - agent response parsing needed",
+                "demand_trends": ["Market analysis requires further data collection"],
+                "salary_insights": "Salary data collection in progress",
+                "skill_requirements": ["Skills analysis pending"]
+            },
+            "skill_analysis": {
+                "current_skills": ["Skill assessment in progress"],
+                "skill_gaps": ["Gap analysis pending"],
+                "learning_recommendations": ["Learning path to be determined"],
+                "priority_skills": ["Priority assessment needed"]
+            },
+            "career_plan": {
+                "career_phases": [],
+                "key_milestones": ["Milestone planning in progress"],
+                "potential_challenges": ["Challenge identification needed"],
+                "success_strategies": ["Strategy development pending"]
+            }
+        }
 
         try:
             # Look for JSON blocks in the response
@@ -572,17 +592,17 @@ class CareerStrategyAgent:
                                     key in parsed_data
                                     for key in ["market_analysis", "demand_trends"]
                                 ):
-                                    analysis_data["market_analysis"] = parsed_data
+                                    analysis_data["market_analysis"].update(parsed_data)
                                 elif any(
                                     key in parsed_data
                                     for key in ["current_skills", "skill_gaps"]
                                 ):
-                                    analysis_data["skill_analysis"] = parsed_data
+                                    analysis_data["skill_analysis"].update(parsed_data)
                                 elif any(
                                     key in parsed_data
                                     for key in ["career_phases", "key_milestones"]
                                 ):
-                                    analysis_data["career_plan"] = parsed_data
+                                    analysis_data["career_plan"].update(parsed_data)
 
                         except json.JSONDecodeError:
                             pass
