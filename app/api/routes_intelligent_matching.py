@@ -5,7 +5,7 @@ Provides enhanced job analysis with market intelligence.
 
 import logging
 from datetime import datetime, timezone
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -41,6 +41,9 @@ def get_intelligent_job_analysis(
         description="Number of similar jobs to analyze for market context",
         ge=1,
         le=10,
+    ),
+    response_language: Optional[str] = Query(
+        None, description="Preferred response language (e.g., 'ja' for Japanese, 'en' for English)"
     ),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
@@ -82,7 +85,7 @@ def get_intelligent_job_analysis(
 
         # Perform intelligent analysis using RAG service
         analysis_result = intelligent_matching_service.analyze_job_with_market_context(
-            job_id=job_id, user_id=current_user.id, db=db, context_depth=context_depth
+            job_id=job_id, user_id=current_user.id, db=db, context_depth=context_depth, response_language=response_language
         )
 
         # Add metadata
@@ -143,6 +146,9 @@ def get_market_intelligence_only(
     context_depth: int = Query(
         5, description="Number of similar jobs to analyze", ge=1, le=10
     ),
+    response_language: Optional[str] = Query(
+        None, description="Preferred response language (e.g., 'ja' for Japanese, 'en' for English)"
+    ),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
@@ -164,7 +170,7 @@ def get_market_intelligence_only(
 
         # Get full analysis but return only market intelligence
         analysis_result = intelligent_matching_service.analyze_job_with_market_context(
-            job_id=job_id, user_id=current_user.id, db=db, context_depth=context_depth
+            job_id=job_id, user_id=current_user.id, db=db, context_depth=context_depth, response_language=response_language
         )
 
         # Extract market intelligence portion
