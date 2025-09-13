@@ -37,7 +37,12 @@ class IntelligentMatchingService:
         pass
 
     def analyze_job_with_market_context(
-        self, job_id: UUID, user_id: UUID, db: Session, context_depth: int = 5, response_language: Optional[str] = None
+        self,
+        job_id: UUID,
+        user_id: UUID,
+        db: Session,
+        context_depth: int = 5,
+        response_language: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Perform intelligent job analysis using RAG approach.
@@ -62,7 +67,9 @@ class IntelligentMatchingService:
             )
 
             # Step 3: Extract market trends using LLM
-            market_intelligence = self._analyze_market_trends(target_job, similar_jobs, response_language)
+            market_intelligence = self._analyze_market_trends(
+                target_job, similar_jobs, response_language
+            )
 
             # Step 4: Generate strategic recommendations
             strategic_analysis = self._generate_strategic_analysis(
@@ -246,7 +253,10 @@ class IntelligentMatchingService:
             )
 
     def _analyze_market_trends(
-        self, target_job: Dict[str, Any], similar_jobs: List[Dict[str, Any]], response_language: Optional[str] = None
+        self,
+        target_job: Dict[str, Any],
+        similar_jobs: List[Dict[str, Any]],
+        response_language: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Extract market trends and insights using LLM analysis.
@@ -327,7 +337,12 @@ class IntelligentMatchingService:
             # Language detection and instruction
             def detect_language(text: str) -> str:
                 """Simple language detection based on character patterns."""
-                if any('\u3040' <= char <= '\u309F' or '\u30A0' <= char <= '\u30FF' or '\u4E00' <= char <= '\u9FAF' for char in text):
+                if any(
+                    "\u3040" <= char <= "\u309F"
+                    or "\u30A0" <= char <= "\u30FF"
+                    or "\u4E00" <= char <= "\u9FAF"
+                    for char in text
+                ):
                     return "ja"  # Japanese
                 return "en"  # Default to English
 
@@ -336,7 +351,11 @@ class IntelligentMatchingService:
                 target_language = response_language
             else:
                 # Auto-detect from job description or title
-                job_text = target_job.get('description', '') + ' ' + target_job.get('title', '')
+                job_text = (
+                    target_job.get("description", "")
+                    + " "
+                    + target_job.get("title", "")
+                )
                 target_language = detect_language(job_text)
 
             # Language-specific instructions
@@ -458,8 +477,14 @@ class IntelligentMatchingService:
                 if any(
                     keyword in line_lower
                     for keyword in [
-                        "market positioning", "1. market", "市場ポジショニング", "1. 市場",
-                        "role level", "役職レベル", "market position", "マーケットポジション"
+                        "market positioning",
+                        "1. market",
+                        "市場ポジショニング",
+                        "1. 市場",
+                        "role level",
+                        "役職レベル",
+                        "market position",
+                        "マーケットポジション",
                     ]
                 ):
                     current_section = "positioning"
@@ -467,16 +492,29 @@ class IntelligentMatchingService:
                 elif any(
                     keyword in line_lower
                     for keyword in [
-                        "salary insights", "2. salary", "給与洞察", "2. 給与",
-                        "compensation", "報酬", "salary range", "給与レンジ"
+                        "salary insights",
+                        "2. salary",
+                        "給与洞察",
+                        "2. 給与",
+                        "compensation",
+                        "報酬",
+                        "salary range",
+                        "給与レンジ",
                     ]
                 ):
                     current_section = "salary"
                     continue
                 elif any(
-                    keyword in line_lower for keyword in [
-                        "skill trends", "3. skill", "スキルトレンド", "3. スキル",
-                        "technical skills", "技術スキル", "valuable skills", "価値あるスキル"
+                    keyword in line_lower
+                    for keyword in [
+                        "skill trends",
+                        "3. skill",
+                        "スキルトレンド",
+                        "3. スキル",
+                        "technical skills",
+                        "技術スキル",
+                        "valuable skills",
+                        "価値あるスキル",
                     ]
                 ):
                     current_section = "skills"
@@ -484,8 +522,14 @@ class IntelligentMatchingService:
                 elif any(
                     keyword in line_lower
                     for keyword in [
-                        "competitive landscape", "4. competitive", "競争環境", "4. 競争",
-                        "market demand", "市場需要", "demand assessment", "需要評価"
+                        "competitive landscape",
+                        "4. competitive",
+                        "競争環境",
+                        "4. 競争",
+                        "market demand",
+                        "市場需要",
+                        "demand assessment",
+                        "需要評価",
                     ]
                 ):
                     current_section = "demand"
@@ -528,24 +572,50 @@ class IntelligentMatchingService:
         if any(
             keyword in line_lower
             for keyword in [
-                "senior", "principal", "staff", "lead", "expert",
-                "シニア", "上級", "リード", "主任", "専門家", "シニアレベル"
+                "senior",
+                "principal",
+                "staff",
+                "lead",
+                "expert",
+                "シニア",
+                "上級",
+                "リード",
+                "主任",
+                "専門家",
+                "シニアレベル",
             ]
         ):
             return "Senior-level market position"
         elif any(
             keyword in line_lower
             for keyword in [
-                "entry", "junior", "associate", "beginning",
-                "エントリー", "初級", "ジュニア", "新人", "初心者", "エントリーレベル"
+                "entry",
+                "junior",
+                "associate",
+                "beginning",
+                "エントリー",
+                "初級",
+                "ジュニア",
+                "新人",
+                "初心者",
+                "エントリーレベル",
             ]
         ):
             return "Entry-level market position"
         elif any(
             keyword in line_lower
             for keyword in [
-                "executive", "director", "vp", "head", "chief",
-                "エグゼクティブ", "役員", "部長", "責任者", "マネージャー", "幹部"
+                "executive",
+                "director",
+                "vp",
+                "head",
+                "chief",
+                "エグゼクティブ",
+                "役員",
+                "部長",
+                "責任者",
+                "マネージャー",
+                "幹部",
             ]
         ):
             return "Executive-level market position"
@@ -675,7 +745,12 @@ class IntelligentMatchingService:
             # Language detection and instruction
             def detect_language(text: str) -> str:
                 """Simple language detection based on character patterns."""
-                if any('\u3040' <= char <= '\u309F' or '\u30A0' <= char <= '\u30FF' or '\u4E00' <= char <= '\u9FAF' for char in text):
+                if any(
+                    "\u3040" <= char <= "\u309F"
+                    or "\u30A0" <= char <= "\u30FF"
+                    or "\u4E00" <= char <= "\u9FAF"
+                    for char in text
+                ):
                     return "ja"  # Japanese
                 return "en"  # Default to English
 
@@ -684,9 +759,13 @@ class IntelligentMatchingService:
                 target_language = response_language
             else:
                 # Auto-detect from job description, title, or resume
-                job_text = target_job.get('description', '') + ' ' + target_job.get('title', '')
-                resume_text = user_resume.get('extracted_text', '')
-                target_language = detect_language(job_text + ' ' + resume_text)
+                job_text = (
+                    target_job.get("description", "")
+                    + " "
+                    + target_job.get("title", "")
+                )
+                resume_text = user_resume.get("extracted_text", "")
+                target_language = detect_language(job_text + " " + resume_text)
 
             # Language-specific instructions
             language_instruction = ""
@@ -793,8 +872,13 @@ class IntelligentMatchingService:
                 if any(
                     keyword in line_lower
                     for keyword in [
-                        "positioning strategy", "1. positioning", "ポジショニング戦略", "1. ポジショニング",
-                        "unique value proposition", "価値提案", "ユニークな価値提案"
+                        "positioning strategy",
+                        "1. positioning",
+                        "ポジショニング戦略",
+                        "1. ポジショニング",
+                        "unique value proposition",
+                        "価値提案",
+                        "ユニークな価値提案",
                     ]
                 ):
                     current_section = "positioning"
@@ -802,8 +886,14 @@ class IntelligentMatchingService:
                 elif any(
                     keyword in line_lower
                     for keyword in [
-                        "competitive advantages", "2. competitive", "競争優位性", "2. 競争",
-                        "unique skills", "ユニークなスキル", "competitive advantage", "アドバンテージ"
+                        "competitive advantages",
+                        "2. competitive",
+                        "競争優位性",
+                        "2. 競争",
+                        "unique skills",
+                        "ユニークなスキル",
+                        "competitive advantage",
+                        "アドバンテージ",
                     ]
                 ):
                     current_section = "advantages"
@@ -811,8 +901,14 @@ class IntelligentMatchingService:
                 elif any(
                     keyword in line_lower
                     for keyword in [
-                        "improvement areas", "3. improvement", "改善エリア", "3. 改善",
-                        "skills to develop", "開発すべきスキル", "improvement suggestions", "改善提案"
+                        "improvement areas",
+                        "3. improvement",
+                        "改善エリア",
+                        "3. 改善",
+                        "skills to develop",
+                        "開発すべきスキル",
+                        "improvement suggestions",
+                        "改善提案",
                     ]
                 ):
                     current_section = "improvements"
@@ -820,8 +916,14 @@ class IntelligentMatchingService:
                 elif any(
                     keyword in line_lower
                     for keyword in [
-                        "application tactics", "4. application", "応募戦術", "4. 応募",
-                        "resume keyword", "履歴書", "interview preparation", "面接準備"
+                        "application tactics",
+                        "4. application",
+                        "応募戦術",
+                        "4. 応募",
+                        "resume keyword",
+                        "履歴書",
+                        "interview preparation",
+                        "面接準備",
                     ]
                 ):
                     current_section = "tactics"
@@ -869,26 +971,42 @@ class IntelligentMatchingService:
                                 )
 
             # Ensure minimum quality content and improve categorization
-            if not result["competitive_advantages"] or not result["improvement_suggestions"]:
+            if (
+                not result["competitive_advantages"]
+                or not result["improvement_suggestions"]
+            ):
                 # Try to extract content from all recommendations if categorization failed
-                all_text = "\n".join([rec.get("recommendation", "") for rec in result["strategic_recommendations"]])
+                all_text = "\n".join(
+                    [
+                        rec.get("recommendation", "")
+                        for rec in result["strategic_recommendations"]
+                    ]
+                )
 
                 # Re-categorize based on content
                 for rec in result["strategic_recommendations"][:]:
                     content = rec.get("recommendation", "")
                     category = self._categorize_recommendation(content)
 
-                    if category == "advantage" and content not in result["competitive_advantages"]:
+                    if (
+                        category == "advantage"
+                        and content not in result["competitive_advantages"]
+                    ):
                         result["competitive_advantages"].append(content)
-                    elif category == "improvement" and content not in result["improvement_suggestions"]:
+                    elif (
+                        category == "improvement"
+                        and content not in result["improvement_suggestions"]
+                    ):
                         result["improvement_suggestions"].append(content)
 
             # Final fallback if still no content
-            if not any([
-                result["strategic_recommendations"],
-                result["competitive_advantages"],
-                result["improvement_suggestions"],
-            ]):
+            if not any(
+                [
+                    result["strategic_recommendations"],
+                    result["competitive_advantages"],
+                    result["improvement_suggestions"],
+                ]
+            ):
                 return self._get_fallback_strategic_analysis()
 
             return result
@@ -911,7 +1029,12 @@ class IntelligentMatchingService:
         # Remove bullet points, numbers, and extra whitespace (including Japanese characters)
         cleaned = line.lstrip("-•*→>>✓・◆■□○☑▶①②③④⑤0123456789. ").strip()
         # Remove section markers
-        cleaned = cleaned.replace("**", "").replace("__", "").replace("：", ":").replace("　", " ")
+        cleaned = (
+            cleaned.replace("**", "")
+            .replace("__", "")
+            .replace("：", ":")
+            .replace("　", " ")
+        )
         return cleaned
 
     def _categorize_recommendation(self, text: str) -> str:
@@ -919,14 +1042,49 @@ class IntelligentMatchingService:
         text_lower = text.lower()
 
         advantage_keywords = [
-            "strength", "advantage", "unique", "standout", "excel", "superior",
-            "強み", "アドバンテージ", "優位性", "ユニーク", "特長", "得意", "優秀",
-            "差別化", "特徴", "秀でる", "競争力", "際立つ", "卓越"
+            "strength",
+            "advantage",
+            "unique",
+            "standout",
+            "excel",
+            "superior",
+            "強み",
+            "アドバンテージ",
+            "優位性",
+            "ユニーク",
+            "特長",
+            "得意",
+            "優秀",
+            "差別化",
+            "特徴",
+            "秀でる",
+            "競争力",
+            "際立つ",
+            "卓越",
         ]
         improvement_keywords = [
-            "improve", "develop", "learn", "gap", "weak", "missing", "need",
-            "改善", "向上", "開発", "学習", "ギャップ", "弱い", "不足", "必要",
-            "習得", "強化", "磨く", "身につける", "育成", "伸ばす", "補う"
+            "improve",
+            "develop",
+            "learn",
+            "gap",
+            "weak",
+            "missing",
+            "need",
+            "改善",
+            "向上",
+            "開発",
+            "学習",
+            "ギャップ",
+            "弱い",
+            "不足",
+            "必要",
+            "習得",
+            "強化",
+            "磨く",
+            "身につける",
+            "育成",
+            "伸ばす",
+            "補う",
         ]
 
         if any(keyword in text_lower for keyword in advantage_keywords):

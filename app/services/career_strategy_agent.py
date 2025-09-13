@@ -477,7 +477,12 @@ ALWAYS use these tools when career information is provided. Start with job_analy
             # Language detection and instruction
             def detect_language(text: str) -> str:
                 """Simple language detection based on character patterns."""
-                if any('\u3040' <= char <= '\u309F' or '\u30A0' <= char <= '\u30FF' or '\u4E00' <= char <= '\u9FAF' for char in text):
+                if any(
+                    "\u3040" <= char <= "\u309F"
+                    or "\u30A0" <= char <= "\u30FF"
+                    or "\u4E00" <= char <= "\u9FAF"
+                    for char in text
+                ):
                     return "ja"  # Japanese
                 return "en"  # Default to English
 
