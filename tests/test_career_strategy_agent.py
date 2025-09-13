@@ -515,15 +515,20 @@ class TestCareerStrategyIntegration:
         mock_get_jobs.return_value = mock_jobs
         mock_get_resume.return_value = mock_resume
 
-        # Mock LLM responses for different tools
+        # Mock LLM responses for different tools using specific prompt headers
         def mock_llm_response(resume_text, feedback_type):
-            if "market" in resume_text.lower():
+            if "DETAILED TECHNICAL MARKET ANALYSIS" in resume_text:
                 return [
                     '{"market_analysis": "Strong demand", "demand_trends": ["Python growing"]}'
                 ]
-            elif "skill" in resume_text.lower():
+            elif "TECHNICAL SKILL GAP ANALYSIS" in resume_text:
                 return ['{"current_skills": ["Python"], "skill_gaps": ["FastAPI"]}']
+            elif "TECHNICAL CAREER PROGRESSION PLAN" in resume_text:
+                return [
+                    '{"career_phases": [{"phase": "Phase 1", "objectives": ["Learn"]}]}'
+                ]
             else:
+                # Fallback - default to career planning
                 return [
                     '{"career_phases": [{"phase": "Phase 1", "objectives": ["Learn"]}]}'
                 ]

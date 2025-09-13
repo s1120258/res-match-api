@@ -666,6 +666,12 @@ ALWAYS use these tools when career information is provided. Start with job_analy
         }
 
         try:
+            # First, try to extract JSON blocks (for test compatibility and structured responses)
+            json_extracted = self._extract_json_blocks(agent_response)
+            if json_extracted:
+                return json_extracted
+
+            # Fallback to text-based extraction
             response_lower = agent_response.lower()
             lines = [
                 line.strip() for line in agent_response.split("\n") if line.strip()
@@ -821,6 +827,99 @@ ALWAYS use these tools when career information is provided. Start with job_analy
             }
 
         return analysis_data
+
+    def _extract_json_blocks(self, agent_response: str) -> Dict[str, Any]:
+        """Extract JSON blocks from agent response for test compatibility."""
+        analysis_data = {
+            "market_analysis": {
+                "market_analysis": "Market analysis completed",
+                "demand_trends": [],
+                "salary_insights": "Competitive salary opportunities available",
+                "skill_requirements": [],
+            },
+            "skill_analysis": {
+                "current_skills": [],
+                "skill_gaps": [],
+                "learning_recommendations": [],
+                "priority_skills": [],
+            },
+            "career_plan": {
+                "career_phases": [],
+                "key_milestones": [],
+                "potential_challenges": [],
+                "success_strategies": [],
+            },
+        }
+
+        try:
+            # Look for JSON blocks in the response
+            lines = agent_response.split("\n")
+            json_buffer = []
+            in_json = False
+            found_data = False
+
+            for line in lines:
+                if "{" in line and not in_json:
+                    in_json = True
+                    json_buffer = [line]
+                elif in_json:
+                    json_buffer.append(line)
+                    if "}" in line and line.count("}") >= line.count("{"):
+                        # Try to parse the JSON block
+                        try:
+                            json_str = "\n".join(json_buffer)
+                            if "{" in json_str and "}" in json_str:
+                                json_start = json_str.find("{")
+                                json_end = json_str.rfind("}") + 1
+                                clean_json = json_str[json_start:json_end]
+                                parsed_data = json.loads(clean_json)
+
+                                # Categorize the data based on content
+                                if any(
+                                    key in parsed_data
+                                    for key in [
+                                        "market_analysis",
+                                        "demand_trends",
+                                        "salary_insights",
+                                        "skill_requirements",
+                                    ]
+                                ):
+                                    analysis_data["market_analysis"].update(parsed_data)
+                                    found_data = True
+                                elif any(
+                                    key in parsed_data
+                                    for key in [
+                                        "current_skills",
+                                        "skill_gaps",
+                                        "learning_recommendations",
+                                        "priority_skills",
+                                    ]
+                                ):
+                                    analysis_data["skill_analysis"].update(parsed_data)
+                                    found_data = True
+                                elif any(
+                                    key in parsed_data
+                                    for key in [
+                                        "career_phases",
+                                        "key_milestones",
+                                        "potential_challenges",
+                                        "success_strategies",
+                                    ]
+                                ):
+                                    analysis_data["career_plan"].update(parsed_data)
+                                    found_data = True
+
+                        except json.JSONDecodeError:
+                            pass
+
+                        json_buffer = []
+                        in_json = False
+
+            return analysis_data if found_data else None
+
+        except Exception as e:
+            logger.warning(f"Error extracting JSON blocks: {str(e)}")
+            return None
 
     def _extract_section_content(
         self, lines: List[str], keywords: List[str]
