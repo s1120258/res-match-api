@@ -76,20 +76,28 @@ class JobAnalysisTool(BaseTool):
 
             # Create market analysis prompt
             market_prompt = f"""
-            Analyze the job market based on the following job data:
+            DETAILED TECHNICAL MARKET ANALYSIS FOR AI/RAG SPECIALIZATION
 
             TARGET ROLES: {', '.join(target_roles) if target_roles else 'General analysis'}
             LOCATION PREFERENCE: {location_preference or 'Not specified'}
+            SPECIALIZATION FOCUS: AI Agents, RAG systems, LLM integration, Python/FastAPI backend
 
             AVAILABLE JOB DATA:
             Job Titles: {job_titles[:10]}  # Limit to first 10 for prompt size
 
-            Provide analysis in JSON format:
+            CRITICAL ANALYSIS REQUIREMENTS:
+            1. Identify SPECIFIC companies in Japan hiring for AI/RAG roles
+            2. Provide ACTUAL salary ranges in JPY (not generic statements)
+            3. List SPECIFIC technical requirements: Python frameworks, vector DB experience, LLM APIs
+            4. Analyze remote work policies for AI roles in Japanese companies
+            5. Reference SPECIFIC technologies: LangChain, pgvector, FastAPI, AWS, OpenAI API
+
+            Provide DETAILED analysis in JSON format:
             {{
-                "market_analysis": "Overall market condition assessment",
-                "demand_trends": ["trend1", "trend2", "trend3"],
-                "salary_insights": "Salary range and progression insights",
-                "skill_requirements": ["skill1", "skill2", "skill3"]
+                "market_analysis": "Specific market conditions for AI/RAG roles in Japan with company examples",
+                "demand_trends": ["Specific trend with technology names", "Remote work adoption in Japan AI sector", "LLM integration demand growth"],
+                "salary_insights": "Actual JPY ranges: Junior 6M-8M, Senior 10M-15M, Lead 15M+ (adjust with real data)",
+                "skill_requirements": ["LangChain framework experience", "pgvector/ChromaDB proficiency", "FastAPI + Pydantic", "RAG architecture design", "LLM prompt engineering"]
             }}
             """
 
@@ -181,7 +189,7 @@ class SkillGapAnalysisTool(BaseTool):
 
             # Create skill gap analysis prompt
             skill_prompt = f"""
-            Analyze skill gaps for career transition:
+            TECHNICAL SKILL GAP ANALYSIS FOR AI/RAG SPECIALIZATION
 
             CURRENT PROFILE:
             {user_resume.extracted_text[:1000]}...
@@ -189,12 +197,21 @@ class SkillGapAnalysisTool(BaseTool):
             TARGET ROLES: {', '.join(target_roles) if target_roles else 'General career growth'}
             CAREER GOALS: {career_goals or 'Professional development'}
 
-            Provide detailed skill gap analysis in JSON format:
+            SPECIALIZATION REQUIREMENTS: AI Agents, RAG systems, LLM integration, Python/FastAPI
+
+            CRITICAL ANALYSIS REQUIREMENTS:
+            1. Identify SPECIFIC technical skills present in resume (Python, frameworks, databases, cloud)
+            2. Pinpoint EXACT technology gaps for AI/RAG roles (LangChain, vector DBs, LLM APIs)
+            3. Provide CONCRETE learning paths with specific courses/certifications
+            4. Reference SPECIFIC technologies: pgvector, ChromaDB, Pinecone, OpenAI API, Anthropic Claude
+            5. Include project-based learning recommendations with technology stacks
+
+            Provide TECHNICAL skill gap analysis in JSON format:
             {{
-                "current_skills": ["skill1", "skill2", "skill3"],
-                "skill_gaps": ["gap1", "gap2", "gap3"],
-                "learning_recommendations": ["Learn X for Y role", "Develop Z skills"],
-                "priority_skills": ["high_priority_skill1", "high_priority_skill2"]
+                "current_skills": ["Python programming (X years)", "FastAPI framework experience", "PostgreSQL database management"],
+                "skill_gaps": ["LangChain framework proficiency", "Vector database implementation (pgvector/Pinecone)", "RAG architecture design", "LLM prompt engineering"],
+                "learning_recommendations": ["Complete LangChain course by Harrison Chase", "Build RAG system with pgvector tutorial", "AWS Bedrock certification for LLM deployment"],
+                "priority_skills": ["LangChain Agent development", "Production RAG implementation", "Vector similarity search optimization"]
             }}
             """
 
@@ -274,26 +291,34 @@ class CareerPathPlannerTool(BaseTool):
 
             # Create career planning prompt
             planning_prompt = f"""
-            Create a detailed career progression plan:
+            TECHNICAL CAREER PROGRESSION PLAN FOR AI/RAG SPECIALIZATION
 
             FROM: {current_role}
             TO: {target_role}
             TIMEFRAME: {timeframe}
+            TECHNICAL FOCUS: AI Agents, RAG systems, LLM integration, Python/FastAPI backend
             CONSTRAINTS: {', '.join(constraints) if constraints else 'None specified'}
 
-            Provide a structured career plan in JSON format:
+            CRITICAL PLANNING REQUIREMENTS:
+            1. Create CONCRETE learning milestones with specific technologies
+            2. Define MEASURABLE skill acquisition goals (certifications, projects)
+            3. Include SPECIFIC project recommendations using target tech stack
+            4. Reference ACTUAL courses, tutorials, and resources
+            5. Plan for REAL portfolio projects demonstrating capabilities
+
+            Provide TECHNICAL career plan in JSON format:
             {{
                 "career_phases": [
                     {{
-                        "phase": "Phase 1 (Months 1-6)",
-                        "objectives": ["objective1", "objective2"],
-                        "key_actions": ["action1", "action2"],
-                        "success_metrics": ["metric1", "metric2"]
+                        "phase": "Phase 1: Foundation Building (Months 1-6)",
+                        "objectives": ["Master LangChain Agent development", "Implement first RAG system"],
+                        "key_actions": ["Complete LangChain course + build 3 agent projects", "Deploy RAG app with pgvector on AWS", "Contribute to open-source AI projects"],
+                        "success_metrics": ["2 RAG projects in portfolio", "LangChain certification", "1000+ GitHub stars on AI project"]
                     }}
                 ],
-                "key_milestones": ["milestone1", "milestone2"],
-                "potential_challenges": ["challenge1", "challenge2"],
-                "success_strategies": ["strategy1", "strategy2"]
+                "key_milestones": ["First production RAG deployment", "Technical leadership role transition", "AI conference speaking opportunity"],
+                "potential_challenges": ["Keeping up with rapid AI tool evolution", "Competition from experienced ML engineers", "Scaling from individual contributor to team lead"],
+                "success_strategies": ["Build in public on Twitter/LinkedIn", "Create technical content (blogs/videos)", "Network at AI meetups in Japan", "Mentor junior developers"]
             }}
             """
 
@@ -500,8 +525,17 @@ ALWAYS use these tools when career information is provided. Start with job_analy
             elif target_language == "en":
                 language_instruction = "\n\nIMPORTANT: Respond in English. Provide all analysis, recommendations, and action plans in English."
 
+            # Extract key technical requirements for emphasis
+            tech_stack = []
+            ai_focus = []
+            for constraint in constraints:
+                if any(tech in constraint.lower() for tech in ['python', 'fastapi', 'langchain', 'pgvector', 'aws', 'rag']):
+                    tech_stack.append(constraint)
+                if any(ai_term in constraint.lower() for ai_term in ['ai', 'rag', 'agent', 'llm', 'automation']):
+                    ai_focus.append(constraint)
+
             analysis_input = f"""
-            CAREER STRATEGY ANALYSIS REQUEST
+            CAREER STRATEGY ANALYSIS REQUEST - TECHNICAL SPECIALIZATION FOCUS
 
             User Profile:
             - CAREER GOALS: {career_goals}
@@ -509,16 +543,41 @@ ALWAYS use these tools when career information is provided. Start with job_analy
             - CURRENT ROLE: {current_role or 'Not specified'}
             - TIMEFRAME: {timeframe}
             - LOCATION PREFERENCE: {location_preference or 'Not specified'}
-            - CONSTRAINTS: {', '.join(constraints) if constraints else 'None'}
+            - TECHNICAL FOCUS: {', '.join(tech_stack) if tech_stack else 'General development'}
+            - AI SPECIALIZATION: {', '.join(ai_focus) if ai_focus else 'General AI'}
+            - ALL CONSTRAINTS: {', '.join(constraints) if constraints else 'None'}
             - USER_ID: {str(user_id)}
+
+            CRITICAL ANALYSIS REQUIREMENTS:
+
+            🎯 SPECIFICITY MANDATE: Provide HIGHLY SPECIFIC, TECHNICAL, and ACTIONABLE analysis.
+            Avoid generic advice. Focus on CONCRETE technologies, frameworks, and implementations.
+
+            🔧 TECHNOLOGY DEEP-DIVE: When analyzing skills and recommendations, explicitly reference:
+            - RAG (Retrieval-Augmented Generation) architectures and implementations
+            - AI Agent frameworks (LangChain, AutoGPT, etc.)
+            - Vector databases (pgvector, Pinecone, Weaviate)
+            - Python ecosystem (FastAPI, Pydantic, asyncio)
+            - LLM integration patterns and production considerations
+            - Workflow automation tools and practices
+
+            🌏 JAPAN MARKET FOCUS: Provide specific insights about:
+            - Japanese companies hiring for these roles
+            - Remote work culture in Japan's tech sector
+            - Salary ranges in JPY for the specified roles
+            - Cultural considerations for leadership roles in Japan
 
             REQUIRED ACTIONS - You MUST use ALL three tools in this order:
 
-            1. FIRST: Use job_analysis_tool with the target roles and location to analyze market conditions
-            2. SECOND: Use skill_gap_analysis_tool with the target roles and career goals to assess skill requirements
-            3. THIRD: Use career_path_planner_tool to create a structured career progression plan
+            1. FIRST: Use job_analysis_tool - Focus on SPECIFIC companies, salary ranges, and technical requirements in Japan
+            2. SECOND: Use skill_gap_analysis_tool - Identify SPECIFIC technical skills, frameworks, and certifications needed
+            3. THIRD: Use career_path_planner_tool - Create CONCRETE action items with specific technologies to learn
 
-            After using all tools, provide a comprehensive synthesis of the results with actionable recommendations.{language_instruction}
+            After using all tools, provide a comprehensive synthesis with:
+            - SPECIFIC project ideas using mentioned technologies
+            - ACTUAL company names and opportunities in Japan
+            - CONCRETE learning resources and certification paths
+            - DETAILED technical skill development roadmap{language_instruction}
 
             START BY USING THE FIRST TOOL NOW.
             """
