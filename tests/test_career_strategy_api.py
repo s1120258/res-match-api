@@ -166,6 +166,7 @@ class TestCareerStrategyAPI:
                 current_role=request_data["current_role"],
                 location_preference=request_data["location_preference"],
                 constraints=request_data["constraints"],
+                response_language=None,
             )
 
         finally:
