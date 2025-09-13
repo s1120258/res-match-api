@@ -529,9 +529,22 @@ ALWAYS use these tools when career information is provided. Start with job_analy
             tech_stack = []
             ai_focus = []
             for constraint in constraints:
-                if any(tech in constraint.lower() for tech in ['python', 'fastapi', 'langchain', 'pgvector', 'aws', 'rag']):
+                if any(
+                    tech in constraint.lower()
+                    for tech in [
+                        "python",
+                        "fastapi",
+                        "langchain",
+                        "pgvector",
+                        "aws",
+                        "rag",
+                    ]
+                ):
                     tech_stack.append(constraint)
-                if any(ai_term in constraint.lower() for ai_term in ['ai', 'rag', 'agent', 'llm', 'automation']):
+                if any(
+                    ai_term in constraint.lower()
+                    for ai_term in ["ai", "rag", "agent", "llm", "automation"]
+                ):
                     ai_focus.append(constraint)
 
             analysis_input = f"""
