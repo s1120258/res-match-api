@@ -446,6 +446,7 @@ ALWAYS use these tools when career information is provided. Start with job_analy
         current_role: str = None,
         location_preference: str = None,
         constraints: List[str] = None,
+        response_language: str = None,
     ) -> Dict[str, Any]:
         """
         Perform comprehensive career strategy analysis using agent approach.
@@ -473,6 +474,27 @@ ALWAYS use these tools when career information is provided. Start with job_analy
             target_roles = target_roles or []
             constraints = constraints or []
 
+            # Language detection and instruction
+            def detect_language(text: str) -> str:
+                """Simple language detection based on character patterns."""
+                if any('\u3040' <= char <= '\u309F' or '\u30A0' <= char <= '\u30FF' or '\u4E00' <= char <= '\u9FAF' for char in text):
+                    return "ja"  # Japanese
+                return "en"  # Default to English
+
+            # Determine response language
+            if response_language:
+                target_language = response_language
+            else:
+                # Auto-detect from career goals
+                target_language = detect_language(career_goals)
+
+            # Language-specific instructions
+            language_instruction = ""
+            if target_language == "ja":
+                language_instruction = "\n\nIMPORTANT: Respond in Japanese (日本語). Provide all analysis, recommendations, and action plans in Japanese."
+            elif target_language == "en":
+                language_instruction = "\n\nIMPORTANT: Respond in English. Provide all analysis, recommendations, and action plans in English."
+
             analysis_input = f"""
             CAREER STRATEGY ANALYSIS REQUEST
 
@@ -491,7 +513,7 @@ ALWAYS use these tools when career information is provided. Start with job_analy
             2. SECOND: Use skill_gap_analysis_tool with the target roles and career goals to assess skill requirements
             3. THIRD: Use career_path_planner_tool to create a structured career progression plan
 
-            After using all tools, provide a comprehensive synthesis of the results with actionable recommendations.
+            After using all tools, provide a comprehensive synthesis of the results with actionable recommendations.{language_instruction}
 
             START BY USING THE FIRST TOOL NOW.
             """

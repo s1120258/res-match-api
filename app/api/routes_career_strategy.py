@@ -52,6 +52,9 @@ def create_career_strategy_plan(
     constraints: Optional[List[str]] = Body(
         None, description="Any constraints or limitations to consider"
     ),
+    response_language: Optional[str] = Body(
+        None, description="Preferred response language (e.g., 'ja' for Japanese, 'en' for English)"
+    ),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> Dict[str, Any]:
@@ -118,6 +121,7 @@ def create_career_strategy_plan(
                 location_preference.strip() if location_preference else None
             ),
             constraints=constraints,
+            response_language=response_language,
         )
 
         # Enhance response with metadata
