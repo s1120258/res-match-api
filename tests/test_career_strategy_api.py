@@ -4,10 +4,11 @@ Tests LangChain agent-based career planning API functionality.
 """
 
 import json
-import pytest
+from datetime import datetime
 from unittest.mock import Mock, patch
 from uuid import uuid4
-from datetime import datetime
+
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app

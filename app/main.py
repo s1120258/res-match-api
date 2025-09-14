@@ -9,10 +9,10 @@ from sqlalchemy import text
 from app.api import (
     routes_analytics,
     routes_auth,
+    routes_career_strategy,
+    routes_intelligent_matching,
     routes_jobs,
     routes_resumes,
-    routes_intelligent_matching,
-    routes_career_strategy,
 )
 from app.core.config import settings
 from app.db.session import SessionLocal

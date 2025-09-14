@@ -4,17 +4,18 @@ Tests LangChain-based career planning and multi-step agent analysis.
 """
 
 import json
-import pytest
-from unittest.mock import Mock, patch, MagicMock
-from uuid import uuid4, UUID
 from datetime import datetime
+from unittest.mock import MagicMock, Mock, patch
+from uuid import UUID, uuid4
+
+import pytest
 
 from app.services.career_strategy_agent import (
+    CareerPathPlannerTool,
     CareerStrategyAgent,
     CareerStrategyAgentError,
     JobAnalysisTool,
     SkillGapAnalysisTool,
-    CareerPathPlannerTool,
 )
 
 

@@ -5,7 +5,7 @@ Provides enhanced job analysis with market intelligence.
 
 import logging
 from datetime import datetime, timezone
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -14,14 +14,14 @@ from sqlalchemy.orm import Session
 from app.api.routes_auth import get_current_user
 from app.db.session import get_db
 from app.models.user import User
-from app.services.intelligent_matching_service import (
-    intelligent_matching_service,
-    IntelligentMatchingServiceError,
-)
 from app.schemas.intelligent_matching import (
     IntelligentJobAnalysisResponse,
-    MarketIntelligenceOnlyResponse,
     IntelligentMatchingHealthResponse,
+    MarketIntelligenceOnlyResponse,
+)
+from app.services.intelligent_matching_service import (
+    IntelligentMatchingServiceError,
+    intelligent_matching_service,
 )
 
 logger = logging.getLogger(__name__)

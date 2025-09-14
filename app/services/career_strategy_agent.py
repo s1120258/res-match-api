@@ -5,25 +5,25 @@ Provides multi-step autonomous career planning and analysis using agent patterns
 
 import json
 import logging
-from typing import Dict, List, Any, Optional, Tuple, Union
-from uuid import UUID
-from sqlalchemy.orm import Session
 from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional, Tuple, Union
+from uuid import UUID
 
-from langchain_openai import ChatOpenAI
-from langchain.agents import create_openai_functions_agent, AgentExecutor
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.schema import SystemMessage, HumanMessage, AIMessage
-from langchain.tools import BaseTool, tool
+from langchain.agents import AgentExecutor, create_openai_functions_agent
 from langchain.memory import ConversationBufferMemory
+from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.schema import AIMessage, HumanMessage, SystemMessage
+from langchain.tools import BaseTool, tool
 from langchain_community.callbacks.manager import get_openai_callback
+from langchain_openai import ChatOpenAI
+from sqlalchemy.orm import Session
 
+from app.core.config import settings
+from app.crud.job import get_jobs
+from app.crud.resume import get_resume_by_user
 from app.services.embedding_service import embedding_service
 from app.services.llm_service import llm_service
 from app.services.similarity_service import similarity_service
-from app.crud.job import get_jobs
-from app.crud.resume import get_resume_by_user
-from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 

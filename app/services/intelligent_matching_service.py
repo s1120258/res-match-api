@@ -5,17 +5,18 @@ Enhances existing pgVector search with market context analysis.
 
 import json
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
 from uuid import UUID
-from sqlalchemy.orm import Session
-from sqlalchemy import text
 
+from sqlalchemy import text
+from sqlalchemy.orm import Session
+
+from app.core.config import settings
+from app.crud.job import get_job
+from app.crud.resume import get_resume_by_user
 from app.services.embedding_service import embedding_service
 from app.services.llm_service import llm_service
 from app.services.similarity_service import similarity_service
-from app.crud.job import get_job
-from app.crud.resume import get_resume_by_user
-from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 

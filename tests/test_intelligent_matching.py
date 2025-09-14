@@ -3,10 +3,11 @@ Unit tests for intelligent job matching service.
 Tests RAG-powered job analysis and market intelligence features.
 """
 
-import pytest
-from unittest.mock import Mock, patch, MagicMock
-from uuid import uuid4, UUID
 from datetime import datetime
+from unittest.mock import MagicMock, Mock, patch
+from uuid import UUID, uuid4
+
+import pytest
 
 from app.services.intelligent_matching_service import (
     IntelligentMatchingService,
@@ -380,6 +381,7 @@ class TestIntelligentMatchingAPI:
     def test_get_intelligent_job_analysis_success(self, mock_get_user, mock_service):
         """Test successful intelligent job analysis API call."""
         from fastapi.testclient import TestClient
+
         from app.main import app
 
         # Setup mocks
@@ -441,6 +443,7 @@ class TestIntelligentMatchingAPI:
     def test_get_market_intelligence_only_success(self, mock_get_user, mock_service):
         """Test market intelligence only endpoint."""
         from fastapi.testclient import TestClient
+
         from app.main import app
 
         # Setup mocks
@@ -482,6 +485,7 @@ class TestIntelligentMatchingAPI:
     def test_health_check_endpoint(self):
         """Test health check endpoint."""
         from fastapi.testclient import TestClient
+
         from app.main import app
 
         client = TestClient(app)
@@ -501,6 +505,7 @@ class TestIntelligentMatchingAPI:
     def test_job_not_found_error(self, mock_get_user, mock_service):
         """Test API error handling when job is not found."""
         from fastapi.testclient import TestClient
+
         from app.main import app
         from app.services.intelligent_matching_service import (
             IntelligentMatchingServiceError,
@@ -540,6 +545,7 @@ class TestIntelligentMatchingAPI:
     def test_invalid_context_depth_parameter(self):
         """Test validation of context_depth parameter."""
         from fastapi.testclient import TestClient
+
         from app.main import app
 
         client = TestClient(app)

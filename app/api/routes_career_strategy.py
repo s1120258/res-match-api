@@ -5,24 +5,24 @@ Provides AI-powered career planning and strategic guidance using LangChain agent
 
 import logging
 from datetime import datetime, timezone
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Body, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app.api.routes_auth import get_current_user
 from app.db.session import get_db
 from app.models.user import User
-from app.services.career_strategy_agent import (
-    career_strategy_agent,
-    CareerStrategyAgentError,
-)
 from app.schemas.career_strategy import (
-    CareerStrategyResponse,
-    SkillGapAnalysisResponse,
-    MarketInsightsResponse,
     AgentStatusResponse,
+    CareerStrategyResponse,
+    MarketInsightsResponse,
+    SkillGapAnalysisResponse,
+)
+from app.services.career_strategy_agent import (
+    CareerStrategyAgentError,
+    career_strategy_agent,
 )
 
 logger = logging.getLogger(__name__)
@@ -231,6 +231,7 @@ def analyze_skill_gaps(
 
         # Create a simplified agent execution focused on skill analysis
         import json
+
         from app.services.career_strategy_agent import SkillGapAnalysisTool
 
         skill_tool = SkillGapAnalysisTool(db)
@@ -332,6 +333,7 @@ def get_market_insights(
 
         # Create job analysis tool
         import json
+
         from app.services.career_strategy_agent import JobAnalysisTool
 
         job_tool = JobAnalysisTool(db)
