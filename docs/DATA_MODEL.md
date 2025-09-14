@@ -14,6 +14,9 @@ erDiagram
         string firstname
         string lastname
         string hashed_password
+        string google_id
+        string provider
+        boolean is_oauth
     }
 
     JOBS {
@@ -65,11 +68,15 @@ erDiagram
 
 - **id**: UUID, primary key
 - **email**: String, unique
-- **firstname**: String
-- **lastname**: String
-- **hashed_password**: String
+- **firstname**: String (default: 'Unknown')
+- **lastname**: String (default: 'User')
+- **hashed_password**: String, nullable (null for OAuth users)
+- **google_id**: String, unique, nullable (Google OAuth user ID)
+- **provider**: String, default 'email' (authentication provider: 'email', 'google')
+- **is_oauth**: Boolean, default false (OAuth authentication flag)
 
   **Relations**: One user has many resumes and many jobs
+  **Authentication**: Supports both email/password and Google OAuth authentication
 
 ### jobs
 
@@ -109,6 +116,37 @@ erDiagram
 - **similarity_score**: Float (0 - 1)
 
   **Relations**: One match score per job; many match_scores per resume
+
+---
+
+## 🤖 AI/ML Extensions
+
+### Vector Embeddings (pgVector)
+
+The data model is enhanced with **pgVector** extension for high-performance vector operations:
+
+- **jobs.job_embedding**: Vector(1536) - OpenAI Ada-002 embeddings for semantic job search
+- **resumes.embedding**: Vector(1536) - Resume content embeddings for similarity matching
+- **Vector Operations**: Cosine similarity search, semantic matching, RAG retrieval
+
+### Performance Optimizations
+
+- **Vector Indexing**: HNSW and IVFFlat indexes on embedding columns
+- **Similarity Search**: ~1ms query performance for vector operations
+- **Batch Processing**: Efficient embedding generation and storage
+- **PostgreSQL Integration**: Native vector operations without external dependencies
+
+### RAG & Agent Data Flow
+
+```mermaid
+graph LR
+    A[Job/Resume Text] --> B[OpenAI Embedding]
+    B --> C[pgVector Storage]
+    C --> D[Similarity Search]
+    D --> E[RAG Context Building]
+    E --> F[LLM Analysis]
+    F --> G[Structured Response]
+```
 
 ---
 

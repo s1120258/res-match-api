@@ -139,6 +139,60 @@ This document describes the comprehensive API endpoints for the ResMatch backend
 - **Trend Identification**: ML-powered insights into job market patterns
 - **Performance Metrics**: Real-time AI system performance monitoring
 
+### 🤖 RAG-Powered Intelligent Matching
+
+| Method | Path                              | Description                                           | Auth | AI Features                                       |
+| ------ | --------------------------------- | ----------------------------------------------------- | ---- | ------------------------------------------------- |
+| GET    | `/jobs/{id}/intelligent-analysis` | Advanced RAG-powered job analysis with market context | ✅   | **RAG**, pgVector similarity, market intelligence |
+| GET    | `/jobs/{id}/market-intelligence`  | Market intelligence analysis only (no resume context) | ✅   | **RAG**, similar jobs analysis, trend insights    |
+| GET    | `/health/intelligent-matching`    | Health check for RAG system components                | ✅   | System status monitoring                          |
+
+**🤖 Advanced RAG Features:**
+
+- **Retrieval-Augmented Generation**: Combines vector similarity with LLM analysis
+- **Market Context Analysis**: Analyzes 5-10 similar positions for market insights
+- **Multi-Language Support**: Japanese (`ja`) and English (`en`) responses with auto-detection
+- **Performance**: ~2-5s for comprehensive analysis including market context
+- **pgVector Integration**: High-performance vector similarity search with PostgreSQL
+
+**Response Parameters:**
+
+- `include_market_context`: Include market analysis from similar jobs (default: true)
+- `context_depth`: Number of similar jobs to analyze (1-10, default: 5)
+- `response_language`: Preferred language (`ja`/`en`, auto-detects if not specified)
+
+### 🧠 LangChain Career Strategy Agent
+
+| Method | Path                         | Description                                       | Auth | AI Features                                        |
+| ------ | ---------------------------- | ------------------------------------------------- | ---- | -------------------------------------------------- |
+| POST   | `/career/strategy-planning`  | Autonomous multi-step career planning with agents | ✅   | **LangChain Agents**, multi-tool orchestration     |
+| POST   | `/career/skill-gap-analysis` | Agent-powered skill gap analysis                  | ✅   | **Autonomous reasoning**, learning recommendations |
+| GET    | `/career/market-insights`    | Market insights for career planning               | ✅   | **Market analysis**, trend identification          |
+| GET    | `/career/agent-status`       | Career agent system health and capabilities       | ✅   | Agent system monitoring                            |
+
+**🤖 Advanced Agent Features:**
+
+- **Autonomous Multi-Step Planning**: LangChain agents with tool orchestration
+- **Career Analysis Tools**: Job Analysis, Skill Gap Analysis, Career Path Planning
+- **Memory Management**: Conversation buffer memory for context retention
+- **Multi-Language Support**: Japanese and English with automatic detection
+- **Agent Execution**: 3-5 tool executions per analysis with iterative reasoning
+- **Cost Tracking**: Token usage and analysis cost monitoring
+
+**Request Body Example** (strategy-planning):
+
+```json
+{
+  "career_goals": "Advance into senior AI engineering role in Japan...",
+  "target_roles": ["Senior AI Engineer", "ML Platform Engineer"],
+  "timeframe": "2-3 years",
+  "current_role": "Software Engineer",
+  "location_preference": "Japan (Remote)",
+  "constraints": ["Focus on RAG/LLM technologies"],
+  "response_language": "ja"
+}
+```
+
 ### 🔑 Auth
 
 | Method | Path                  | Description                                  |
@@ -163,23 +217,41 @@ This document describes the comprehensive API endpoints for the ResMatch backend
 ### AI/ML Pipeline Architecture
 
 ```mermaid
-graph LR
-    A[User Input] --> B[Text Processing]
-    B --> C[Vector Embedding]
-    C --> D[PostgreSQL + pgVector]
-    D --> E[Similarity Calculation]
-    E --> F[LLM Analysis]
-    F --> G[Structured Response]
+graph TB
+    subgraph "RAG Pipeline"
+        A[User Input] --> B[Vector Embedding]
+        B --> C[pgVector Similarity Search]
+        C --> D[Similar Jobs Retrieval]
+        D --> E[Context Building]
+        E --> F[LLM Analysis with Context]
+        F --> G[Structured Response]
+    end
+
+    subgraph "Agent Pipeline"
+        H[Career Goals] --> I[LangChain Agent Executor]
+        I --> J[Tool Selection & Execution]
+        J --> K[Job Analysis Tool]
+        J --> L[Skill Gap Tool]
+        J --> M[Career Planning Tool]
+        K --> N[Multi-Step Reasoning]
+        L --> N
+        M --> N
+        N --> O[Agent Response]
+    end
 ```
 
 ### Performance Characteristics
 
-| **Component**        | **Latency** | **Technology**      | **Optimization**   |
-| -------------------- | ----------- | ------------------- | ------------------ |
-| Embedding Generation | ~50ms       | OpenAI Ada-002      | Batch processing   |
-| Vector Similarity    | ~1ms        | PostgreSQL pgVector | Indexed search     |
-| LLM Text Generation  | 2-5s        | GPT-4o mini         | Token optimization |
-| Database Queries     | 5-20ms      | PostgreSQL          | Connection pooling |
+| **Component**        | **Latency** | **Technology**          | **Optimization**       |
+| -------------------- | ----------- | ----------------------- | ---------------------- |
+| Embedding Generation | ~50ms       | OpenAI Ada-002          | Batch processing       |
+| Vector Similarity    | ~1ms        | PostgreSQL pgVector     | Indexed search         |
+| RAG Analysis (Full)  | 2-5s        | pgVector + GPT-4o mini  | Context optimization   |
+| Agent Execution      | 5-15s       | LangChain + GPT-4o mini | Tool orchestration     |
+| Language Detection   | ~10ms       | Text pattern analysis   | Lightweight heuristics |
+| LLM Text Generation  | 2-5s        | GPT-4o mini             | Token optimization     |
+| Database Queries     | 5-20ms      | PostgreSQL              | Connection pooling     |
+| Agent Tool Execution | 1-3s        | Multi-step reasoning    | Memory management      |
 
 ### Error Handling
 
@@ -187,14 +259,20 @@ All AI endpoints implement comprehensive error handling:
 
 - **OpenAI API Errors**: Authentication, rate limits, service unavailability
 - **Vector Operations**: Dimension mismatches, empty embeddings
-- **LLM Parsing**: JSON validation, fallback responses
-- **Database Errors**: Connection issues, constraint violations
+- **RAG System Errors**: Similar jobs retrieval failures, context building issues
+- **Agent Execution Errors**: Tool failures, memory management, iteration limits
+- **Language Detection**: Fallback to English for unsupported languages
+- **LLM Parsing**: JSON validation, fallback responses, structured data extraction
+- **Database Errors**: Connection issues, constraint violations, pgVector operations
 
 ### Rate Limiting & Cost Control
 
-- **Token Optimization**: Dynamic `max_tokens` based on input length
-- **Response Caching**: SHA256-based keys with 1-hour TTL
-- **Batch Processing**: Multiple operations in single API calls
+- **Token Optimization**: Dynamic `max_tokens` based on input length and complexity
+- **Response Caching**: SHA256-based keys with 1-hour TTL for expensive operations
+- **Agent Cost Tracking**: Real-time monitoring of tool execution and token usage
+- **RAG Context Optimization**: Intelligent similar jobs selection and context pruning
+- **Language-Aware Processing**: Optimized prompts for Japanese vs English analysis
+- **Batch Processing**: Multiple operations in single API calls where possible
 - **Circuit Breakers**: Automatic fallbacks for external service failures
 
 ---
