@@ -21,6 +21,12 @@ services:
       - .:/app
     environment:
       - BACKEND_CORS_ORIGINS=["https://resmatchai.com", "https://res-match-ui.vercel.app", "http://localhost:3000"]
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=res_match
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-test_key_for_docker_testing}
 
   db:
     image: pgvector/pgvector:pg15

@@ -25,7 +25,7 @@ This document describes the comprehensive API endpoints for the ResMatch backend
 | GET    | `/jobs/{id}`         | Get details of a specific job                                      | ✅   | Includes ML-generated insights             |
 | PUT    | `/jobs/{id}`         | Update job status or notes                                         | ✅   | -                                          |
 | DELETE | `/jobs/{id}`         | Delete a saved job                                                 | ✅   | -                                          |
-| GET    | `/jobs/{id}/summary` | Generate concise summary from saved job description                | ✅   | **GPT-3.5-turbo** with HTML cleaning       |
+| GET    | `/jobs/{id}/summary` | Generate concise summary from saved job description                | ✅   | **GPT-4o mini** with HTML cleaning         |
 | POST   | `/jobs/summary`      | Generate summary from external job description (HTML supported)    | ✅   | **LLM-powered** summarization with caching |
 | POST   | `/jobs/{id}/apply`   | Mark a job as applied                                              | ✅   | -                                          |
 
@@ -66,7 +66,7 @@ This document describes the comprehensive API endpoints for the ResMatch backend
 
 | Method | Path                        | Description                                      | Auth | AI Features                             |
 | ------ | --------------------------- | ------------------------------------------------ | ---- | --------------------------------------- |
-| GET    | `/resume/feedback`          | Get general LLM feedback for current resume      | ✅   | **GPT-3.5-turbo** professional analysis |
+| GET    | `/resume/feedback`          | Get general LLM feedback for current resume      | ✅   | **GPT-4o mini** professional analysis   |
 | GET    | `/resume/feedback/{job_id}` | Get job-specific LLM feedback for current resume | ✅   | **Context-aware** tailoring suggestions |
 
 **🤖 AI Features:**
@@ -95,7 +95,7 @@ This document describes the comprehensive API endpoints for the ResMatch backend
 
 #### Skill Extraction & Normalization
 
-- **LLM-Powered Extraction**: GPT-3.5-turbo with structured JSON output
+- **LLM-Powered Extraction**: GPT-4o mini with structured JSON output
 - **Skill Normalization**: "JS" → "JavaScript" with confidence scores
 - **Multi-Category Classification**: Programming languages, frameworks, tools, domains
 - **Experience Estimation**: Years of experience inferred from context
@@ -139,6 +139,60 @@ This document describes the comprehensive API endpoints for the ResMatch backend
 - **Trend Identification**: ML-powered insights into job market patterns
 - **Performance Metrics**: Real-time AI system performance monitoring
 
+### 🤖 RAG-Powered Intelligent Matching
+
+| Method | Path                              | Description                                           | Auth | AI Features                                       |
+| ------ | --------------------------------- | ----------------------------------------------------- | ---- | ------------------------------------------------- |
+| GET    | `/jobs/{id}/intelligent-analysis` | Advanced RAG-powered job analysis with market context | ✅   | **RAG**, pgVector similarity, market intelligence |
+| GET    | `/jobs/{id}/market-intelligence`  | Market intelligence analysis only (no resume context) | ✅   | **RAG**, similar jobs analysis, trend insights    |
+| GET    | `/health/intelligent-matching`    | Health check for RAG system components                | ✅   | System status monitoring                          |
+
+**🤖 Advanced RAG Features:**
+
+- **Retrieval-Augmented Generation**: Combines vector similarity with LLM analysis
+- **Market Context Analysis**: Analyzes 5-10 similar positions for market insights
+- **Multi-Language Support**: Japanese (`ja`) and English (`en`) responses with auto-detection
+- **Performance**: ~2-5s for comprehensive analysis including market context
+- **pgVector Integration**: High-performance vector similarity search with PostgreSQL
+
+**Response Parameters:**
+
+- `include_market_context`: Include market analysis from similar jobs (default: true)
+- `context_depth`: Number of similar jobs to analyze (1-10, default: 5)
+- `response_language`: Preferred language (`ja`/`en`, auto-detects if not specified)
+
+### 🧠 LangChain Career Strategy Agent
+
+| Method | Path                         | Description                                       | Auth | AI Features                                        |
+| ------ | ---------------------------- | ------------------------------------------------- | ---- | -------------------------------------------------- |
+| POST   | `/career/strategy-planning`  | Autonomous multi-step career planning with agents | ✅   | **LangChain Agents**, multi-tool orchestration     |
+| POST   | `/career/skill-gap-analysis` | Agent-powered skill gap analysis                  | ✅   | **Autonomous reasoning**, learning recommendations |
+| GET    | `/career/market-insights`    | Market insights for career planning               | ✅   | **Market analysis**, trend identification          |
+| GET    | `/career/agent-status`       | Career agent system health and capabilities       | ✅   | Agent system monitoring                            |
+
+**🤖 Advanced Agent Features:**
+
+- **Autonomous Multi-Step Planning**: LangChain agents with tool orchestration
+- **Career Analysis Tools**: Job Analysis, Skill Gap Analysis, Career Path Planning
+- **Memory Management**: Conversation buffer memory for context retention
+- **Multi-Language Support**: Japanese and English with automatic detection
+- **Agent Execution**: 3-5 tool executions per analysis with iterative reasoning
+- **Cost Tracking**: Token usage and analysis cost monitoring
+
+**Request Body Example** (strategy-planning):
+
+```json
+{
+  "career_goals": "Advance into senior AI engineering role in Japan...",
+  "target_roles": ["Senior AI Engineer", "ML Platform Engineer"],
+  "timeframe": "2-3 years",
+  "current_role": "Software Engineer",
+  "location_preference": "Japan (Remote)",
+  "constraints": ["Focus on RAG/LLM technologies"],
+  "response_language": "ja"
+}
+```
+
 ### 🔑 Auth
 
 | Method | Path                  | Description                                  |
@@ -158,53 +212,4 @@ This document describes the comprehensive API endpoints for the ResMatch backend
 
 ---
 
-## 🛠️ Technical Implementation Details
-
-### AI/ML Pipeline Architecture
-
-```mermaid
-graph LR
-    A[User Input] --> B[Text Processing]
-    B --> C[Vector Embedding]
-    C --> D[PostgreSQL + pgVector]
-    D --> E[Similarity Calculation]
-    E --> F[LLM Analysis]
-    F --> G[Structured Response]
-```
-
-### Performance Characteristics
-
-| **Component**        | **Latency** | **Technology**      | **Optimization**   |
-| -------------------- | ----------- | ------------------- | ------------------ |
-| Embedding Generation | ~50ms       | OpenAI Ada-002      | Batch processing   |
-| Vector Similarity    | ~1ms        | PostgreSQL pgVector | Indexed search     |
-| LLM Text Generation  | 2-5s        | GPT-3.5-turbo       | Token optimization |
-| Database Queries     | 5-20ms      | PostgreSQL          | Connection pooling |
-
-### Error Handling
-
-All AI endpoints implement comprehensive error handling:
-
-- **OpenAI API Errors**: Authentication, rate limits, service unavailability
-- **Vector Operations**: Dimension mismatches, empty embeddings
-- **LLM Parsing**: JSON validation, fallback responses
-- **Database Errors**: Connection issues, constraint violations
-
-### Rate Limiting & Cost Control
-
-- **Token Optimization**: Dynamic `max_tokens` based on input length
-- **Response Caching**: SHA256-based keys with 1-hour TTL
-- **Batch Processing**: Multiple operations in single API calls
-- **Circuit Breakers**: Automatic fallbacks for external service failures
-
----
-
-## 🔗 Resources
-
-- **🌐 Live API Documentation**: [res-match-api.onrender.com/docs](https://res-match-api.onrender.com/docs) (Interactive Swagger UI)
-- **📊 Live Demo**: [res-match-ui.vercel.app](https://res-match-ui.vercel.app) (Full application)
-- **📖 Technical Architecture**: [TECHNICAL_ARCHITECTURE.md](./TECHNICAL_ARCHITECTURE.md)
-- **🗂️ Database Schema**: [DATA_MODEL.md](./DATA_MODEL.md)
-- **⚙️ Setup Guide**: [SETUP.md](./SETUP.md)
-
-For detailed implementation examples and advanced usage patterns, refer to the comprehensive [technical documentation](./TECHNICAL_ARCHITECTURE.md).
+For more details, see the [README](../README.md) and other docs in this folder.
