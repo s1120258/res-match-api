@@ -31,8 +31,9 @@ def mock_similarity_service():
 def mock_openai_client():
     """Mock OpenAI client initialization for all services."""
     import openai
+
     mock_client = MagicMock()
-    with patch.object(openai, 'OpenAI', return_value=mock_client):
+    with patch.object(openai, "OpenAI", return_value=mock_client):
         yield mock_client
 
 
@@ -48,10 +49,18 @@ def mock_langchain_components():
     mock_executor.tools = mock_tools
     mock_executor.agent = mock_agent
 
-    with patch("app.services.career_strategy_agent.ChatOpenAI"), \
-         patch("app.services.career_strategy_agent.create_openai_functions_agent", return_value=mock_agent), \
-         patch("app.services.career_strategy_agent.AgentExecutor", return_value=mock_executor), \
-         patch("app.services.career_strategy_agent.get_openai_callback"):
+    with (
+        patch("app.services.career_strategy_agent.ChatOpenAI"),
+        patch(
+            "app.services.career_strategy_agent.create_openai_functions_agent",
+            return_value=mock_agent,
+        ),
+        patch(
+            "app.services.career_strategy_agent.AgentExecutor",
+            return_value=mock_executor,
+        ),
+        patch("app.services.career_strategy_agent.get_openai_callback"),
+    ):
         yield
 
 
