@@ -144,15 +144,15 @@ graph TB
     subgraph "Core AI Innovation"
         subgraph "RAG Layer"
             IMS[Intelligent Matching Service]
-            SIM[Vector Similarity Service]
+            SIM[Similarity Service]
             VDB[pgVector Similar Jobs Retrieval]
         end
 
         subgraph "Agent Layer"
             CSA[Career Strategy Agent]
             JAT[Job Analysis Tool]
-            SAT[Skill Gap Tool]
-            CPT[Career Planning Tool]
+            SAT[Skill Gap Analysis Tool]
+            CPT[Career Path Planner Tool]
         end
 
         subgraph "Foundation Services"
