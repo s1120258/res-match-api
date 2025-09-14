@@ -58,7 +58,7 @@ docker compose run --rm backend alembic upgrade head
 print_success "Database migrations completed!"
 
 print_step "Running tests with coverage..."
-docker compose run --rm backend pytest --cov=app --cov-report=term-missing
+docker compose run --rm -e OPENAI_API_KEY=test-api-key-for-docker-testing backend pytest --cov=app --cov-report=term-missing
 print_success "Tests completed!"
 
 print_step "Checking code formatting with Black..."

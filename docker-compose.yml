@@ -26,6 +26,7 @@ services:
       - DB_HOST=db
       - DB_PORT=5432
       - DB_NAME=res_match
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-test_key_for_docker_testing}
 
   db:
     image: pgvector/pgvector:pg15
