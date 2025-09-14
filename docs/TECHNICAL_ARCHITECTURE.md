@@ -16,73 +16,89 @@ ResMatch is an AI-powered career platform that leverages modern machine learning
 
 ```mermaid
 graph TB
-    subgraph "🎯 Core AI Innovation"
-        subgraph "Foundation Services"
-            LLM[OpenAI GPT-4o mini]
-            EMB[text-embedding-ada-002]
-            PG[(PostgreSQL + pgVector)]
-        end
-
-        subgraph "RAG Intelligence Layer"
-            IMS[Intelligent Matching Service]
-            SIM[Vector Similarity Search]
-        end
-
-        subgraph "Agent Autonomy Layer"
-            CSA[Career Strategy Agent]
-            JAT[Job Analysis Tool]
-            SAT[Skill Gap Tool]
-            CPT[Career Planning Tool]
-        end
+    subgraph "🌐 Frontend & Deployment"
+        UI[React + Vite + Chakra UI]
+        VERCEL[Vercel Deployment]
     end
 
-    subgraph "🌐 Application Layer"
+    subgraph "🚪 API Gateway"
+        NGINX[NGINX Reverse Proxy]
         API[FastAPI Backend]
-        UI[React Frontend]
     end
 
-    subgraph "📊 Data Sources"
-        JOBS[Job Postings]
-        RESUME[User Resumes]
+    subgraph "🤖 AI/ML Services"
+        LLM[OpenAI GPT-4o mini]
+        EMB[text-embedding-ada-002]
+        RAG[RAG Intelligent Matching]
+        AGENT[LangChain Career Agent]
+        SKILL[Skill Analysis Engine]
+        SIM[Vector Similarity Service]
     end
 
-    %% Core AI Flow
-    PG --> SIM
-    EMB --> PG
-    SIM --> IMS
-    IMS --> LLM
-    
-    %% Agent Flow
-    CSA --> JAT
-    CSA --> SAT
-    CSA --> CPT
-    JAT --> LLM
-    SAT --> LLM
-    CPT --> LLM
-    
-    %% Application Flow
-    UI --> API
-    API --> IMS
-    API --> CSA
-    
-    %% Data Flow
-    JOBS --> PG
-    RESUME --> PG
-    EMB --> JOBS
-    EMB --> RESUME
+    subgraph "💾 Data Layer"
+        SUPABASE[(PostgreSQL + pgVector)]
+        CACHE[In-Memory Cache]
+    end
+
+    subgraph "🔗 External Services"
+        JOBS[Job Board APIs]
+        AUTH[Google OAuth2]
+        AWS[AWS Parameter Store]
+    end
+
+    subgraph "🚀 DevOps & CI/CD"
+        GITHUB[GitHub Actions]
+        GHCR[Container Registry]
+        EC2[AWS EC2 Instance]
+    end
+
+    %% Frontend flow
+    UI --> VERCEL
+    VERCEL --> NGINX
+
+    %% API Gateway flow
+    NGINX --> API
+
+    %% AI/ML service connections
+    API --> RAG
+    API --> AGENT
+    API --> LLM
+    API --> EMB
+    API --> SKILL
+    API --> SIM
+
+    %% Data connections
+    API --> SUPABASE
+    API --> CACHE
+    EMB --> SUPABASE
+    SIM --> SUPABASE
+    RAG --> SUPABASE
+    AGENT --> SUPABASE
+
+    %% External service connections
+    API --> JOBS
+    API --> AUTH
+    API --> AWS
+
+    %% DevOps flow
+    GITHUB --> GHCR
+    GHCR --> EC2
+    EC2 --> NGINX
 
     %% Styling
+    classDef frontend fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000000
+    classDef api fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px,color:#000000
     classDef ai fill:#e8f5e8,stroke:#388e3c,stroke-width:3px,color:#000000
-    classDef rag fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px,color:#000000
-    classDef agent fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000000
-    classDef app fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000000
-    classDef data fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000000
+    classDef data fill:#fff8e1,stroke:#f57c00,stroke-width:3px,color:#000000
+    classDef external fill:#ffebee,stroke:#d32f2f,stroke-width:3px,color:#000000
+    classDef devops fill:#f1f8e9,stroke:#558b2f,stroke-width:3px,color:#000000
 
-    class LLM,EMB,PG ai
-    class IMS,SIM rag
-    class CSA,JAT,SAT,CPT agent
-    class API,UI app
-    class JOBS,RESUME data
+    class UI,VERCEL frontend
+    class NGINX,API api
+    class LLM,EMB,RAG,AGENT,SKILL,SIM ai
+    class SUPABASE,CACHE data
+    class JOBS,AUTH,AWS external
+    class GITHUB,GHCR,EC2 devops
 ```
 
 ### RAG & Agent Architecture Focus
