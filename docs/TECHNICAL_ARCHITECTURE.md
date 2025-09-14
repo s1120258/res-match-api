@@ -230,13 +230,12 @@ sequenceDiagram
     participant RAG Service
     participant Vector DB
     participant LLM
-    participant Market DB
 
     User->>API: GET /jobs/{job_id}/intelligent-analysis
     API->>RAG Service: Analyze Job with Context
     RAG Service->>Vector DB: Find Similar Jobs (pgVector)
     Vector DB->>RAG Service: Similar Job Dataset
-    RAG Service->>LLM: Market Trend Analysis
+    RAG Service->>LLM: Market Trend Analysis (Similar Jobs)
     LLM->>RAG Service: Market Intelligence
     RAG Service->>LLM: Strategic Recommendations
     LLM->>RAG Service: Competitive Analysis
