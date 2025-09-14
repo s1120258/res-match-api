@@ -59,6 +59,7 @@ def mock_career_strategy_agent():
 def mock_openai_api_key():
     """Mock OpenAI API key for all tests."""
     import os
+
     original_key = os.environ.get("OPENAI_API_KEY")
     os.environ["OPENAI_API_KEY"] = "test-api-key-for-testing"
     yield
