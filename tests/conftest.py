@@ -28,30 +28,30 @@ def mock_similarity_service():
 
 
 @pytest.fixture(autouse=True)
-def mock_llm_service():
-    """Mock LLM service for all tests."""
-    with patch("app.services.llm_service.llm_service"):
-        yield
+def mock_openai_client():
+    """Mock OpenAI client initialization for all services."""
+    import openai
+    mock_client = MagicMock()
+    with patch.object(openai, 'OpenAI', return_value=mock_client):
+        yield mock_client
 
 
 @pytest.fixture(autouse=True)
-def mock_skill_analysis_service():
-    """Mock skill analysis service for all tests."""
-    with patch("app.services.skill_analysis_service.skill_analysis_service"):
-        yield
+def mock_langchain_components():
+    """Mock LangChain components for career strategy agent."""
+    mock_agent = MagicMock()
+    mock_executor = MagicMock()
+    mock_tools = [MagicMock(name=f"tool_{i}") for i in range(3)]
+    mock_tools[0].name = "job_analysis_tool"
+    mock_tools[1].name = "skill_gap_analysis_tool"
+    mock_tools[2].name = "career_path_planner_tool"
+    mock_executor.tools = mock_tools
+    mock_executor.agent = mock_agent
 
-
-@pytest.fixture(autouse=True)
-def mock_skill_extraction_service():
-    """Mock skill extraction service for all tests."""
-    with patch("app.services.skill_extraction_service.skill_extraction_service"):
-        yield
-
-
-@pytest.fixture(autouse=True)
-def mock_career_strategy_agent():
-    """Mock career strategy agent for all tests."""
-    with patch("app.services.career_strategy_agent.CareerStrategyAgent"):
+    with patch("app.services.career_strategy_agent.ChatOpenAI"), \
+         patch("app.services.career_strategy_agent.create_openai_functions_agent", return_value=mock_agent), \
+         patch("app.services.career_strategy_agent.AgentExecutor", return_value=mock_executor), \
+         patch("app.services.career_strategy_agent.get_openai_callback"):
         yield
 
 
