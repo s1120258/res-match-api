@@ -1,8 +1,8 @@
 # 🧠 ResMatch – Advanced AI Career Intelligence Platform
 
-**ResMatch** is a next-generation AI-powered career platform that combines **RAG (Retrieval-Augmented Generation)**, **LangChain autonomous agents**, and **multi-language AI** to deliver intelligent job matching, autonomous career strategy planning, and comprehensive skill analysis. Built with production-grade architecture and enterprise-level security.
+**ResMatch** is a next-generation AI-powered career platform that combines **RAG (Retrieval-Augmented Generation)** and **LangChain autonomous agents** to deliver intelligent job matching, autonomous career strategy planning, and comprehensive skill analysis. Built with production-grade architecture and enterprise-level security.
 
-**🚀 Core Innovation**: RAG-powered market intelligence + LangChain agents for autonomous career planning with Japanese/English multi-language support.
+**🚀 Core Innovation**: RAG-powered market intelligence + LangChain agents for autonomous career planning with advanced AI workflows.
 
 ---
 
@@ -25,7 +25,6 @@
 | **Frontend**        | React, Vite, TypeScript, Chakra UI           | Modern, responsive user interface           |
 | **Authentication**  | OAuth2, JWT, bcrypt, Google OAuth            | Secure user authentication                  |
 | **Data Processing** | PyPDF2, python-docx, BeautifulSoup4          | Document parsing, web scraping              |
-| **Multi-language**  | Auto-detection, explicit language parameters | Japanese/English AI responses               |
 | **Caching**         | In-memory Python dictionaries with TTL       | LLM response caching                        |
 | **DevOps**          | Docker, GitHub Actions, GHCR, AWS EC2, NGINX | Containerization, CI/CD, deployment         |
 | **Configuration**   | AWS Parameter Store, environment variables   | Secure credential management                |
@@ -39,7 +38,7 @@
 - **Market Context Analysis**: Retrieves similar jobs from pgVector database to provide market intelligence
 - **Strategic Positioning**: Competitive advantage recommendations based on similar role analysis
 - **Performance**: ~2-3 second comprehensive analysis with market trend synthesis
-- **Multi-language Support**: Automatic Japanese/English detection with culturally-adapted responses
+- **Context-Aware Analysis**: Dynamic analysis based on job requirements and market positioning
 
 ### 🤖 LangChain Autonomous Career Strategy Agent
 
@@ -50,7 +49,7 @@
 
 #### Agent Specialized Tools:
 
-1. **JobAnalysisTool**: Market trends, demand analysis, and salary insights with Japan market focus
+1. **JobAnalysisTool**: Market trends, demand analysis, and salary insights with regional market focus
 2. **SkillGapAnalysisTool**: Current skills vs. target requirements with learning path recommendations
 3. **CareerPathPlannerTool**: Multi-phase career progression with measurable success metrics
 
@@ -75,13 +74,6 @@
 - **Semantic Matching**: Beyond exact string matching for transferable skills
 - **Learning Recommendations**: Prioritized skill development with time estimates
 - **Gap Analysis**: Current vs. target role skill comparison with actionable insights
-
-#### 🌐 Multi-Language AI Support
-
-- **Auto-Detection**: Unicode range analysis for Japanese character recognition
-- **Explicit Control**: `response_language` parameter support across all AI endpoints
-- **Cultural Adaptation**: Japan-specific market insights and business culture considerations
-- **Full Coverage**: Both RAG and Agent systems support Japanese/English responses
 
 #### 📊 Analytics & Insights
 
@@ -152,16 +144,15 @@
 | Database Queries       | 5-20ms      | 500+ RPS       | pgVector indexing        |
 | RAG Analysis           | 2-3s        | 10-15 RPS      | Context-aware retrieval  |
 | Agent Workflow         | 8-12s       | 5-8 RPS        | Multi-tool orchestration |
-| Language Detection     | <1ms        | 10000+ RPS     | Unicode range analysis   |
 
 ### 🚀 Innovation Highlights
 
 - **🧠 RAG Intelligence**: Market context analysis through similar job retrieval and LLM synthesis
 - **🤖 Autonomous Agents**: Multi-tool career strategy planning with specialized analysis tools
-- **🌐 Multi-Language AI**: Japanese/English support with automatic detection and cultural adaptation
 - **⚡ Cost-Optimized AI**: Strategic model selection, token management, and response caching
 - **📊 Vector-Powered Search**: High-performance semantic job matching with pgVector optimization
-- **🎯 Technical Specialization**: AI/RAG/LLM focused career guidance with Japan market insights
+- **🎯 Technical Specialization**: AI/RAG/LLM focused career guidance and market insights
+- **🔧 Production-Ready**: Enterprise-grade architecture with comprehensive testing and monitoring
 
 ### 🏢 Engineering Excellence
 
