@@ -24,12 +24,12 @@ graph TB
     subgraph "Backend API"
         APP[FastAPI Application]
         subgraph "API Routes"
-            AUTH[/auth - Authentication]
-            JOBS[/jobs - Job Management]
-            RESUMES[/resumes - Resume Management]
-            ANALYTICS[/analytics - Analytics]
-            RAG_API[/jobs/{id}/intelligent-analysis]
-            AGENT_API[/career/strategy-planning]
+            AUTH[auth - Authentication]
+            JOBS[jobs - Job Management]
+            RESUMES[resumes - Resume Management]
+            ANALYTICS[analytics - Analytics]
+            RAG_API[intelligent-analysis - RAG]
+            AGENT_API[strategy-planning - Agent]
         end
     end
 
@@ -76,7 +76,7 @@ graph TB
     %% API Route connections
     APP --> AUTH
     APP --> JOBS
-    APP --> RESUMES  
+    APP --> RESUMES
     APP --> ANALYTICS
     APP --> RAG_API
     APP --> AGENT_API
