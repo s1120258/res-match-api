@@ -31,88 +31,31 @@
 
 ---
 
-## 🚀 Advanced AI Features
+## 📝 Core Features
 
-### 🧠 RAG-Powered Intelligent Job Analysis
+### 🧠 RAG-Powered Job Analysis
 
-- **Market Context Analysis**: Retrieves similar jobs from pgVector database to provide market intelligence
-- **Strategic Positioning**: Competitive advantage recommendations based on similar role analysis
-- **Performance**: ~2-3 second comprehensive analysis with market trend synthesis
-- **Context-Aware Analysis**: Dynamic analysis based on job requirements and market positioning
-
-### 🤖 LangChain Autonomous Career Strategy Agent
-
-- **Multi-tool Orchestration**: Specialized tools for job market analysis, skill assessment, and career planning
-- **Autonomous Reasoning**: Multi-step decision making with 5-iteration limit for comprehensive analysis
-- **Cost Optimization**: Token usage tracking and intelligent prompt management
-- **Structured Output**: JSON + narrative responses with actionable recommendations
-
-#### Agent Specialized Tools:
-
-1. **JobAnalysisTool**: Market trends, demand analysis, and salary insights with regional market focus
-2. **SkillGapAnalysisTool**: Current skills vs. target requirements with learning path recommendations
-3. **CareerPathPlannerTool**: Multi-phase career progression with measurable success metrics
-
-### 💡 Core Platform Features
-
-#### ✅ Enhanced Job Search & Management
-
-- **Smart Matching**: pgVector-powered semantic similarity with 85% human judgment correlation
-- **External Integration**: RemoteOK and other job board scraping with real-time updates
-- **Application Tracking**: Status management with AI-powered match scoring
-
-#### 📄 Advanced Resume Management
-
-- **Multi-format Support**: PDF/DOCX parsing with automated text extraction
-- **Skill Extraction**: LLM-powered skill identification with confidence scoring
-- **Dynamic Feedback**: Context-aware resume improvement suggestions
-- **Vector Storage**: 1536-dimensional embeddings for semantic matching
-
-#### 🎯 Intelligent Skill Analysis
-
-- **LLM-based Normalization**: Dynamic skill standardization (e.g., "JS" → "JavaScript")
-- **Semantic Matching**: Beyond exact string matching for transferable skills
-- **Learning Recommendations**: Prioritized skill development with time estimates
-- **Gap Analysis**: Current vs. target role skill comparison with actionable insights
-
-#### 📊 Analytics & Insights
-
-- **Performance Metrics**: Real-time API response times and token usage tracking
-- **User Analytics**: Application patterns, skill development trends, and success metrics
-- **Market Intelligence**: Industry trend analysis and competitive positioning
-
-#### 🔒 Enterprise-Grade Security
-
-- **OAuth2 + JWT**: Secure token-based authentication with refresh capability
-- **Google OAuth Integration**: Unified authentication flow with automatic account linking
-- **Data Protection**: bcrypt password hashing, SQL injection prevention, CORS configuration
-- **Secure Configuration**: AWS Parameter Store integration for credential management
-
----
-
-## 🌐 API Endpoints Overview
-
-### 🧠 RAG-Powered Intelligent Analysis
-
-- `GET /api/v1/jobs/{job_id}/intelligent-analysis` — Comprehensive job analysis with market context
-- `GET /api/v1/jobs/{job_id}/market-intelligence` — Market intelligence analysis only
-- `GET /api/v1/health/intelligent-matching` — RAG service health check
+- Market context analysis using similar job retrieval from pgVector database
+- Strategic positioning and competitive advantage recommendations
+- ~2-3 second comprehensive analysis with market trend synthesis
 
 ### 🤖 LangChain Career Strategy Agent
 
-- `POST /api/v1/career/strategy-planning` — Autonomous multi-step career strategy planning
-- `POST /api/v1/career/skill-gap-analysis` — AI-powered skill gap assessment
-- `GET /api/v1/career/market-insights` — Job market insights for career planning
-- `GET /api/v1/career/agent-status` — Agent service health and capabilities
+- Autonomous multi-step career planning with specialized tools
+- Market analysis, skill gap assessment, and career path planning
+- Cost-optimized with token usage tracking and structured JSON output
 
-### 📊 Core Platform APIs
+### 📄 Smart Job & Resume Management
 
-- `GET /api/v1/jobs/search` — Semantic job search with vector similarity
-- `POST /api/v1/resumes/upload` — Resume upload with AI skill extraction
-- `GET /api/v1/resume/skills` — LLM-powered skill analysis and normalization
-- `POST /api/v1/auth/google/verify` — Unified Google OAuth authentication
+- **Semantic Matching**: pgVector-powered similarity with 85% accuracy correlation
+- **Resume Processing**: PDF/DOCX parsing with LLM-powered skill extraction
+- **Intelligent Feedback**: Context-aware resume improvement suggestions
+- **Application Tracking**: Status management with AI-powered scoring
 
-**🔄 Interactive API Documentation**: [resmatch-api.ddns.net/docs](https://resmatch-api.ddns.net/docs)
+### 🔒 Security & Infrastructure
+
+- OAuth2 + JWT authentication with Google OAuth integration
+- Production-ready with Docker deployment and comprehensive testing
 
 ---
 
@@ -121,7 +64,6 @@
 ### 📖 Technical Documentation
 
 - **[🧠 TECHNICAL_ARCHITECTURE.md](./docs/TECHNICAL_ARCHITECTURE.md)** — Comprehensive AI/ML system architecture and implementation details
-- **[🤖 RAG_AGENT_IMPLEMENTATION.md](./docs/RAG_AGENT_IMPLEMENTATION.md)** — RAG & LangChain agent implementation guide and planning
 - [📁 API_SPEC.md](./docs/API_SPEC.md) — Complete API reference with AI-powered endpoint descriptions
 - [🗂️ DATA_MODEL.md](./docs/DATA_MODEL.md) — Database schema and vector storage specifications
 
@@ -132,43 +74,13 @@
 
 ---
 
-## 🏆 Technical Achievements & Performance
-
-### 🎯 Performance Metrics
-
-| **Operation**          | **Latency** | **Throughput** | **Optimization**         |
-| ---------------------- | ----------- | -------------- | ------------------------ |
-| Vector Embedding       | ~50ms       | 20 RPS         | OpenAI API limits        |
-| Similarity Calculation | ~1ms        | 1000+ RPS      | Pure Python computation  |
-| LLM Text Generation    | 2-5s        | Variable       | Token-based optimization |
-| Database Queries       | 5-20ms      | 500+ RPS       | pgVector indexing        |
-| RAG Analysis           | 2-3s        | 10-15 RPS      | Context-aware retrieval  |
-| Agent Workflow         | 8-12s       | 5-8 RPS        | Multi-tool orchestration |
-
-### 🚀 Innovation Highlights
+## 🏆 Technical Highlights
 
 - **🧠 RAG Intelligence**: Market context analysis through similar job retrieval and LLM synthesis
 - **🤖 Autonomous Agents**: Multi-tool career strategy planning with specialized analysis tools
-- **⚡ Cost-Optimized AI**: Strategic model selection, token management, and response caching
-- **📊 Vector-Powered Search**: High-performance semantic job matching with pgVector optimization
-- **🎯 Technical Specialization**: AI/RAG/LLM focused career guidance and market insights
-- **🔧 Production-Ready**: Enterprise-grade architecture with comprehensive testing and monitoring
-
-### 🏢 Engineering Excellence
-
-- **🏗️ Clean Architecture**: Service-oriented design with clear separation of concerns
-- **🧪 Comprehensive Testing**: 133+ tests with 100% pass rate, extensive AI feature coverage
-- **🚀 Production Ready**: Docker deployment with enterprise-grade CI/CD pipelines
-- **🔐 Security Implementation**: Industry-standard authentication, authorization, and data protection
-- **📊 Monitoring & Observability**: Comprehensive logging, performance tracking, and health checks
-
-### 🎪 DevOps & Deployment Excellence
-
-- **📦 Multi-Platform Builds**: linux/amd64 and linux/arm64 support with GitHub Container Registry
-- **🎯 Smart Deployment**: Change-detection based deployment with automated health verification
-- **🛡️ Security**: SSL/TLS with Let's Encrypt, secure headers, environment variable management
-- **⚡ Performance Optimization**: Native ARM64 platform, connection pooling, caching strategies
-- **🔍 Health Monitoring**: Real-time health checks with automated rollback capability
+- **⚡ High Performance**: ~50ms embeddings, ~1ms similarity search, sub-second API responses
+- **🔧 Production Ready**: Docker deployment, CI/CD pipelines, 133+ tests with 100% pass rate
+- **🔐 Enterprise Security**: OAuth2/JWT authentication, data protection, secure configuration
 
 **📖 For detailed technical implementation, see [TECHNICAL_ARCHITECTURE.md](./docs/TECHNICAL_ARCHITECTURE.md)**
 
