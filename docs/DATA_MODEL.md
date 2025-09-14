@@ -136,18 +136,6 @@ The data model is enhanced with **pgVector** extension for high-performance vect
 - **Batch Processing**: Efficient embedding generation and storage
 - **PostgreSQL Integration**: Native vector operations without external dependencies
 
-### RAG & Agent Data Flow
-
-```mermaid
-graph LR
-    A[Job/Resume Text] --> B[OpenAI Embedding]
-    B --> C[pgVector Storage]
-    C --> D[Similarity Search]
-    D --> E[RAG Context Building]
-    E --> F[LLM Analysis]
-    F --> G[Structured Response]
-```
-
 ---
 
 For more details, see the [README](../README.md) and other docs in this folder.
