@@ -101,7 +101,7 @@ graph TB
     class GITHUB,GHCR,EC2 devops
 ```
 
-### 🚀 RAG & Agent Architecture Focus
+### RAG & Agent Architecture Focus
 
 The core innovation of ResMatch lies in its advanced AI capabilities through **RAG-powered intelligent matching** and **LangChain autonomous career agents**. Here's the focused architecture:
 
@@ -199,29 +199,7 @@ graph TB
 
 ## 📊 Data Flow & API Integration
 
-### 1. Job Matching Workflow
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant API
-    participant Scraper
-    participant Embedding
-    participant Vector DB
-    participant LLM
-
-    User->>API: Search Jobs (keyword)
-    API->>Scraper: Fetch External Jobs
-    Scraper->>API: Job Listings
-    API->>Embedding: Generate Job Embeddings
-    API->>Vector DB: Calculate Similarities
-    Vector DB->>API: Ranked Results
-    API->>LLM: Generate Summaries
-    LLM->>API: Job Summaries
-    API->>User: Ranked Job Results
-```
-
-### 2. RAG-Powered Intelligent Job Analysis Workflow
+### 1. RAG-Powered Intelligent Job Analysis Workflow
 
 ```mermaid
 sequenceDiagram
@@ -243,7 +221,7 @@ sequenceDiagram
     API->>User: Enhanced Job Analysis + Market Context
 ```
 
-### 3. LangChain Agent Career Strategy Workflow
+### 2. LangChain Agent Career Strategy Workflow
 
 ```mermaid
 sequenceDiagram
@@ -279,6 +257,28 @@ sequenceDiagram
     LLM->>Agent: Comprehensive Strategy
     Agent->>API: Structured Career Strategy
     API->>User: Multi-Language Career Plan
+```
+
+### 3. Job Matching Workflow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant API
+    participant Scraper
+    participant Embedding
+    participant Vector DB
+    participant LLM
+
+    User->>API: Search Jobs (keyword)
+    API->>Scraper: Fetch External Jobs
+    Scraper->>API: Job Listings
+    API->>Embedding: Generate Job Embeddings
+    API->>Vector DB: Calculate Similarities
+    Vector DB->>API: Ranked Results
+    API->>LLM: Generate Summaries
+    LLM->>API: Job Summaries
+    API->>User: Ranked Job Results
 ```
 
 ### 4. Resume Processing Pipeline
